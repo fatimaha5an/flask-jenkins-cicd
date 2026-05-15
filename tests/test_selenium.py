@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-APP_URL = "http://flask-app:5000"
+APP_URL = "http://172.17.0.1:5000"
 
 @pytest.fixture(scope="module")
 def driver():
@@ -14,6 +14,7 @@ def driver():
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
     driver = webdriver.Remote(
         command_executor="http://selenium-hub:4444/wd/hub",
         options=chrome_options
