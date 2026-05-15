@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Management System</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        h1 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        input { padding: 8px; margin: 5px; width: 200px; }
+        button { padding: 8px 16px; background: #4CAF50; color: white; border: none; cursor: pointer; border-radius: 4px; }
+        #message { color: green; margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Student Management System</h1>
+    <h2>Add Student</h2>
+    <div>
+        <input type="text" id="name" placeholder="Student Name" />
+        <input type="text" id="grade" placeholder="Grade (e.g. A, B)" />
+        <button id="addBtn" onclick="addStudent()">Add Student</button>
+    </div>
+    <div id="message"></div>
+    <h2>Students List</h2>
+    <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Grade</th></tr></thead>
+        <tbody id="studentTable">
+            {% for student in students %}
+            <tr>
+                <td>{{ student['id'] }}</td>
+                <td>{{ student['name'] }}</td>
+                <td>{{ student['grade'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        async function addStudent() {
+            const name = document.getElementById('name').value;
+            const grade = document.getElementById('grade').value;
+            const res = await fetch('/add', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name, grade})
+            });
+            const data = await res.json();
+            document.getElementById('message').innerText = data.message || data.error;
+            if (res.ok) location.reload();
+        }
+    </script>
+</body>
+</html>
